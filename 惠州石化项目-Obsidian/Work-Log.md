@@ -17,3 +17,4 @@
 - 上传远端状态：本机未安装 GitHub CLI `gh`，项目此前也没有远端；GitHub 连接器可访问账号 `itxuqiqi`，但未发现明确对应本项目的仓库。等待用户指定目标仓库。
 - 用户指定远端仓库：`https://github.com/itxuqiqi/Laptop_Project.git`。
 - 已将本地 `main` 推送到 GitHub 远端 `origin/main`。推送时本机全局 Git 将 HTTPS 改写为 SSH，因此补写了 GitHub 官方 SSH host key 到 `known_hosts` 后完成推送。
+- 补充项目根目录 `README.md`，说明项目用途、目录结构、主要代码模块、资料库规则、已知模板数据、当前重点问题和维护原则。
