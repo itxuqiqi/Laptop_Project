@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Excel/Office lock files
+~$*
+
+# Project source data and generated workbooks are large and month-specific.
+# Track code and Obsidian notes by default; keep monthly data local unless explicitly requested.
+1月数据/
+2月/
+3月/
+4月/
+6月/
+25年12月/
+*.xlsx
+*.xls
+*.xlsm
+*.pdf
+
+# Local/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
