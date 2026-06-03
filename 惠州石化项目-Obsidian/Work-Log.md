@@ -12,3 +12,6 @@
 - 验证结果：3 月暂估表可读出 1 条 DES/DAT/DAP；4 月 `其他在途 ` 修复后可读出 2 条 DES/DAT/DAP，且价格包可读出 DES/DAT/DAP 合计美元/桶。
 - 语法检查：`intransit_read.py` 和 `intransit_price_pack.py` 通过 `py_compile`。
 - 下一步：拿到 2026 年 5 月原油暂估源文件后复测；同时建议增加更明确的缺页签/空数据日志。
+- 为当前代码建立本地 Git 备份：在项目根目录初始化仓库，提交 `code/`、`.gitignore` 和 `惠州石化项目-Obsidian/`，排除月份 Excel 数据、PDF、Office 临时锁文件和 `__pycache__`。
+- 本地备份提交：`16112bd`，提交信息 `Backup Huizhou cost report project`。
+- 上传远端状态：本机未安装 GitHub CLI `gh`，项目此前也没有远端；GitHub 连接器可访问账号 `itxuqiqi`，但未发现明确对应本项目的仓库。等待用户指定目标仓库。
