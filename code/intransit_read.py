@@ -168,18 +168,31 @@ def read_intransit_estimate(file_path: str, fx_rate: float | None = None):
         else:
             raise ValueError(f"未知暂估表金额读取模式：{amount_mode}")
 
-        # 其他在途需要把“在途类型”拼到名称后；类型列同样按列名取。
-        if with_type:
+        def _other_type_from_row(row) -> str:
             type_col = _find_col(df2, TYPE_SPECS)
-            if type_col is None:
-                # 类型列缺失时不强行用 P 列，避免插列后错取；直接保留基础原油名。
-                df2["__type__"] = ""
-            else:
-                df2["__type__"] = df2[type_col].apply(lambda x: "" if pd.isna(x) else str(x).strip())
-            df2["__name__"] = df2.apply(
-                lambda r: f"{r['__name_raw__']}（{r['__type__']}）" if r["__type__"] else r["__name_raw__"],
-                axis=1,
-            )
+            if type_col is not None:
+                v = row.get(type_col)
+                if not pd.isna(v) and str(v).strip():
+                    return str(v).strip()
+            for c in df2.columns:
+                if str(c).startswith("Unnamed"):
+                    v = row.get(c)
+                    if not pd.isna(v):
+                        s = str(v).strip()
+                        if s.endswith("在途"):
+                            return s
+            return "其他在途"
+
+        def _display_other_name(row) -> str:
+            base = str(row["__name_raw__"]).strip()
+            if base and not base.endswith("原油"):
+                base = f"{base}原油"
+            typ = _other_type_from_row(row)
+            return f"{base}（{typ}）" if typ else base
+
+        # 其他在途需要把类型拼到名称后；若源表未给明确类型，默认按“其他在途”展示。
+        if with_type:
+            df2["__name__"] = df2.apply(_display_other_name, axis=1)
         else:
             df2["__name__"] = df2["__name_raw__"]
 

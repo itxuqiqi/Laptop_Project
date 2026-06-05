@@ -731,6 +731,8 @@ def fill_sheet_2_3(
             if prc is None and cat_s == "DES/DAT/DAP在途（货权未转移）":
                 base_name = re.sub(r"（.*?）$", "", str(name_raw).strip())
                 prc = detail_price.get((norm(cat_s), norm(base_name)))
+                if prc is None and base_name.endswith("原油"):
+                    prc = detail_price.get((norm(cat_s), norm(base_name[:-2])))
 
             # 只有在 pack 没取到时，才依赖 2-1 做 fallback
             if prc is None:
@@ -766,6 +768,8 @@ def fill_sheet_2_3(
             if prc is None and cat_s == "DES/DAT/DAP在途（货权未转移）":
                 base_name = re.sub(r"（.*?）$", "", str(name_raw).strip())
                 prc = detail_price.get((norm(cat_s), norm(base_name)))
+                if prc is None and base_name.endswith("原油"):
+                    prc = detail_price.get((norm(cat_s), norm(base_name[:-2])))
 
             if prc is None:
                 if d22 is None or not _is_valid_qty(d22["end_qty"]):

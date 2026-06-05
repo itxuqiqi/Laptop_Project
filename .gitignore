@@ -11,15 +11,22 @@ __pycache__/
 2月/
 3月/
 4月/
+5月/
 6月/
 25年12月/
 *.xlsx
 *.xls
 *.xlsm
 *.pdf
+*.zip
 
 # Local/editor noise
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# Packaging outputs
+dist_pack/
+build_pack*/
+.venv_pack*/

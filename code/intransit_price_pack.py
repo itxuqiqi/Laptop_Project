@@ -125,6 +125,16 @@ def _is_summary_name(name: str) -> bool:
     return False
 
 
+def _detail_names_for_price(name_raw: str) -> list[str]:
+    base = _clean_name(name_raw)
+    if not base:
+        return []
+    names = [base]
+    if not base.endswith("原油"):
+        names.append(f"{base}原油")
+    return names
+
+
 def build_intransit_price_pack(intransit_file: str) -> dict:
     """
     输出给 fill_sheet_2_3 使用的 pack：
@@ -326,7 +336,8 @@ def build_intransit_price_pack(intransit_file: str) -> dict:
             for name_raw, g in dff.groupby("name_raw"):
                 qty_sum = float(pd.to_numeric(g["qty_bbl"], errors="coerce").sum(skipna=True))
                 if qty_sum == 0:
-                    detail_price[(norm("DES/DAT/DAP在途（货权未转移）"), norm(name_raw))] = None
+                    for price_name in _detail_names_for_price(name_raw):
+                        detail_price[(norm("DES/DAT/DAP在途（货权未转移）"), norm(price_name))] = None
                     continue
 
                 num = 0.0
@@ -339,7 +350,9 @@ def build_intransit_price_pack(intransit_file: str) -> dict:
                     num += float(q) * float(u)
                     has = True
 
-                detail_price[(norm("DES/DAT/DAP在途（货权未转移）"), norm(name_raw))] = None if not has else (num / qty_sum)
+                price_value = None if not has else (num / qty_sum)
+                for price_name in _detail_names_for_price(name_raw):
+                    detail_price[(norm("DES/DAT/DAP在途（货权未转移）"), norm(price_name))] = price_value
 
             amt_sum = pd.to_numeric(dff["amt_usd"], errors="coerce").sum(skipna=True)
             qty_sum = pd.to_numeric(dff["qty_bbl"], errors="coerce").sum(skipna=True)
